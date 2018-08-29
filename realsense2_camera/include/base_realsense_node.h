@@ -51,15 +51,6 @@ namespace realsense2_camera
     };
     typedef std::pair<image_transport::Publisher, std::shared_ptr<FrequencyDiagnostics>> ImagePublisherWithFrequencyDiagnostics;
 
-	class PipelineSyncer : public rs2::asynchronous_syncer
-	{
-	public: 
-		void operator()(rs2::frame f) const
-		{
-			invoke(std::move(f));
-		}
-	};
-
     class BaseRealSenseNode : public InterfaceRealSenseNode
     {
     public:
@@ -169,7 +160,7 @@ namespace realsense2_camera
         bool _align_depth;
         bool _sync_frames;
         bool _pointcloud;
-		PipelineSyncer _syncer;
+        rs2::asynchronous_syncer _syncer;
 
         std::map<stream_index_pair, cv::Mat> _depth_aligned_image;
         std::map<stream_index_pair, std::string> _depth_aligned_encoding;
